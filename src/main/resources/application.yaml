@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: realtime_transaction_tracker
+  cloud:
+    function:
+      definition: processTransaction
+    stream:
+      bindings:
+        processTransaction-in-0:
+          destination: transaction_initiation
+          group: transaction-group
+      kafka:
+        binder:
+          brokers: localhost:9092
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/mybank
+
+server:
+  port: 8081
