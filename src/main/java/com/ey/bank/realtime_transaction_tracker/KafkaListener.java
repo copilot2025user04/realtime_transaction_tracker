@@ -3,6 +3,7 @@ package com.ey.bank.realtime_transaction_tracker;
 import com.ey.bank.realtime_transaction_tracker.dao.TransactionRequest;
 import com.ey.bank.realtime_transaction_tracker.entity.WithdrawalDocument;
 import com.ey.bank.realtime_transaction_tracker.repo.WithdrawalRepository;
+import org.joda.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +22,9 @@ public class KafkaListener {
         return transactionRequest -> {
             System.out.println("Received transaction: " + transactionRequest);
             WithdrawalDocument doc = new WithdrawalDocument(
-                    transactionRequest.getAccountNumber(),
+                    transactionRequest.getSender(),
                     transactionRequest.getAmount(),
-                    transactionRequest.getTimestamp()
+                    Instant.now()
             );
             System.out.println("WithdrawalDocument transaction: " + doc);
             repository.save(doc).subscribe();

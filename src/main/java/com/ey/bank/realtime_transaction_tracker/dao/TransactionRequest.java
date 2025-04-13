@@ -11,8 +11,9 @@ import org.joda.time.Instant;
 @AllArgsConstructor
 @ToString
 public class TransactionRequest {
-    private String accountNumber;
+    private String transactionId;
+    private String sender;
     private double amount;
-    private Instant timestamp;
+    private String receiver;
     // Getters and setters
 }

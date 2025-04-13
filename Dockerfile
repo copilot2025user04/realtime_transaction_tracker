@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file into the container
-COPY realtime_transaction_tracker-0.0.1-SNAPSHOT.jar realtime-transaction-tracker-0.0.1-SNAPSHOT.jar
+COPY build/libs/realtime_transaction_tracker-0.0.1-SNAPSHOT.jar realtime-transaction-tracker-0.0.1-SNAPSHOT.jar
 
 # Expose the port your application runs on
 EXPOSE 8080
