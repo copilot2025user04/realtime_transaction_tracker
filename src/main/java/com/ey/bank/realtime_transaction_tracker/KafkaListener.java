@@ -5,7 +5,6 @@ import com.ey.bank.realtime_transaction_tracker.entity.WithdrawalDocument;
 import com.ey.bank.realtime_transaction_tracker.repo.WithdrawalRepository;
 import org.joda.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
