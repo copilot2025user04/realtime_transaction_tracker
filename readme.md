@@ -1,6 +1,6 @@
 docker compose up
 
-docker exec -it 76a5d99c212f bash
+docker exec -it 7087ccfd10d3 bash
 
 kafka-topics --bootstrap-server localhost:9092 \
 --create --if-not-exists \
@@ -11,7 +11,7 @@ kafka-topics --bootstrap-server localhost:9092 \
 kafka-topics --bootstrap-server localhost:9092 --list
 
 
-docker exec -it c29ac51350a4 mongosh
+docker exec -it e6d6676f0fce mongosh
 use mybank
 db.createCollection("withdrawals", {
 timeseries: {
@@ -40,3 +40,17 @@ enter below message
 docker build -t realtime-transaction-tracker:3 .
 docker tag realtime-transaction-tracker:3 bikashhasmobile/realtime-transaction-tracker:1.0.0
 docker push bikashhasmobile/realtime-transaction-tracker:1.0.0
+
+minikube start --memory=4096 --cpus=2
+minikube addons enable ingress
+kubectl apply -f k8s-deployment.yaml
+kubectl get pods
+kubectl get svc
+kubectl get pvc
+
+kubectl logs deployment/realtime-transaction-tracker
+
+minikube service <service-name>
+minikube pause
+minikube stop
+minikube delete

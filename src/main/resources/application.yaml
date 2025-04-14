@@ -14,7 +14,7 @@ spring:
           brokers: localhost:9092
   data:
     mongodb:
-      uri: mongodb://localhost:27017/mybank
+      uri: mongodb://mongo-db:27017/mybank
 
 server:
   port: 8081

@@ -12,17 +12,40 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
     volumes:
       - kafka-data:/var/lib/kafka/data
 
   mongo:
     image: mongo:7.0
+    container_name: mongo-db
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+  setup:
+    image: bikashhasmobile/setup-script:1.0
+    depends_on:
+      - kafka
+      - mongo
+    restart: "no"
+  realtime-transaction-tracker:
+    image: realtime-transaction-tracker:3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8080"
+    depends_on:
+      - kafka
+      - mongo
+      - setup
+    environment:
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:9092
+      SPRING_DATA_MONGODB_URI: mongodb://mongo-db:27017/mybank
 
 volumes:
   kafka-data:
