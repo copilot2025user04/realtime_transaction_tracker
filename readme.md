@@ -41,7 +41,7 @@ docker build -t realtime-transaction-tracker:3 .
 docker tag realtime-transaction-tracker:3 bikashhasmobile/realtime-transaction-tracker:1.0.0
 docker push bikashhasmobile/realtime-transaction-tracker:1.0.0
 
-minikube start --memory=4096 --cpus=2
+minikube start --memory=6144 --cpus=2 --disk-size=20g
 minikube addons enable ingress
 kubectl apply -f k8s-deployment.yaml
 kubectl get pods
@@ -49,6 +49,8 @@ kubectl get svc
 kubectl get pvc
 
 kubectl logs deployment/realtime-transaction-tracker
+
+kubectl logs kafka-75fbccc55d-kpf6z
 
 minikube service <service-name>
 minikube pause
