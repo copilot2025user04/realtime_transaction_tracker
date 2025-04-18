@@ -26,6 +26,14 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5433:5432'
   setup:
     image: bikashhasmobile/setup-script:1.0
     depends_on:
