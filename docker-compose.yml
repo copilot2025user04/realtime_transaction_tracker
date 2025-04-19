@@ -41,7 +41,7 @@ services:
       - mongo
     restart: "no"
   realtime-transaction-tracker:
-    image: bikashhasmobile/realtime-transaction-tracker:2.0.0
+    image: bikashhasmobile/realtime-transaction-tracker:1.0.0
     build:
       context: .
       dockerfile: Dockerfile
