@@ -1,6 +1,6 @@
 docker compose up
 
-docker exec -it 7087ccfd10d3 bash
+docker exec -it 4e55b81055a5 bash
 
 kafka-topics --bootstrap-server localhost:9092 \
 --create --if-not-exists \
@@ -11,7 +11,7 @@ kafka-topics --bootstrap-server localhost:9092 \
 kafka-topics --bootstrap-server localhost:9092 --list
 
 
-docker exec -it e6d6676f0fce mongosh
+docker exec -it b1662bf57961 mongosh
 use mybank
 db.createCollection("withdrawals", {
 timeseries: {
@@ -34,12 +34,16 @@ db.withdrawals.find({accountNumber: "1234567890"}).pretty()
 db.withdrawals.find({accountNumber: "1234567890", status: "SUCCESS"}).pretty()
 db.withdrawals.find({accountNumber: "123457"}).pretty()
 kafka-console-producer --broker-list localhost:9092 --topic transaction_initiation
-enter below message 
-{"accountNumber":"123456","amount":100.0,"timestamp":"2025-04-10T12:00:00Z"}
+enter below message
+{ "transactionId": "txn_ABC123", "amount": 500.00, "sender": "123456711", "receiver": "987654322" }
+{ "transactionId": "txn_ABC123", "amount": 500.00, "sender": "123456710", "receiver": "987654322" }
+{ "transactionId": "txn_ABC123", "amount": 200.00, "sender": "123456711", "receiver": "987654322" }
+{ "transactionId": "txn_ABC123", "amount": 300.00, "sender": "123456711", "receiver": "987654322" }
+{ "transactionId": "txn_ABC123", "amount": 300.00, "sender": "123456711", "receiver": "987654322" ,status:"F" }
 
-docker build -t realtime-transaction-tracker:3 .
-docker tag realtime-transaction-tracker:3 bikashhasmobile/realtime-transaction-tracker:1.0.0
-docker push bikashhasmobile/realtime-transaction-tracker:1.0.0
+docker build -t realtime-transaction-tracker:4 .
+docker tag realtime-transaction-tracker:4 bikashhasmobile/realtime-transaction-tracker:2.0.0
+docker push bikashhasmobile/realtime-transaction-tracker:2.0.0
 
 minikube start --memory=6144 --cpus=2 --disk-size=20g
 minikube addons enable ingress
