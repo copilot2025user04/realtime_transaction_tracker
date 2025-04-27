@@ -7,14 +7,15 @@ spring:
     stream:
       bindings:
         processTransaction-in-0:
-          destination: transaction_initiation
+          destination: transaction_initiation,transaction_status
           group: transaction-group
+          contentType: application/json
       kafka:
         binder:
           brokers: localhost:9092
   data:
     mongodb:
-      uri: mongodb://mongo-db:27017/mybank
+      uri: mongodb://localhost:27017/mybank
 
 server:
   port: 8081

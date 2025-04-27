@@ -5,13 +5,16 @@ import lombok.Data;
 import lombok.ToString;
 import org.joda.time.Instant;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.math.BigDecimal;
+
 @Data
 @ToString
 @AllArgsConstructor
 @Document("withdrawals")
 public class WithdrawalDocument {
     private String accountNumber;
-    private double amount;
+    private BigDecimal amount;
     private Instant timestamp;
 
 

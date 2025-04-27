@@ -4,7 +4,6 @@ services:
     image: confluentinc/cp-zookeeper:7.5.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     ports:
@@ -18,7 +17,6 @@ services:
       - zookeeper
     volumes:
       - kafka-data:/var/lib/kafka/data
-
   mongo:
     image: mongo:7.0
     container_name: mongo-db
@@ -26,14 +24,31 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-  db:
-    image: postgres:14.1-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: redis/redis-stack:latest
+    container_name: tmsRedis
     ports:
-      - '5433:5432'
+      - "6389:6379"
+      - "8001:8001"
+    volumes:
+      - ~/data/redis/data:/data
+
+  mysql:
+    image: mysql:8
+    container_name: mysql8
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: tmsroot  # Change this to a strong password
+      MYSQL_DATABASE: mysql_tms_ti               # Optional: default database
+      MYSQL_USER: tmsuser                 # Optional: non-root user
+      MYSQL_PASSWORD: tmsuser         # Optional: non-root user's password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ~/data/mysql:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
   setup:
     image: bikashhasmobile/setup-script:1.0
     depends_on:
@@ -54,7 +69,25 @@ services:
     environment:
       SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:9092
       SPRING_DATA_MONGODB_URI: mongodb://mongo-db:27017/mybank
+  view-transaction-service:
+    image: bikashhasmobile/view_transaction:4.0.0
+    container_name: view_transaction_service
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+    - SPRING_R2DBC_URL=r2dbc:mysql://mysql8:3306/mysql_tms_ti  # Connect to MySQL container
+    - SPRING_R2DBC_USERNAME=tmsuser
+    - SPRING_R2DBC_PASSWORD=tmsuser
+    networks:
+      - app-network
 
 volumes:
   kafka-data:
   mongo-data:
+  mysql-data:
+networks:
+  app-network:
+    driver: bridge
