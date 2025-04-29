@@ -1,13 +1,13 @@
 package com.ey.bank.realtime_transaction_tracker.dao;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 @Data
-@Setter
-@Getter
-
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
     public static enum AccountType {

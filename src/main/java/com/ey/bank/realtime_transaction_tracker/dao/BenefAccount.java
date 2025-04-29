@@ -1,12 +1,14 @@
 package com.ey.bank.realtime_transaction_tracker.dao;
 
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
-@Builder
 @Data
-
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BenefAccount {
     public static enum AccountType {
         SAVINGS, CURRENT, LOAN;
