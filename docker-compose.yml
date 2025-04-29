@@ -58,7 +58,7 @@ services:
       - mongo
     restart: "no"
   realtime-transaction-tracker:
-    image: bikashhasmobile/realtime-transaction-tracker:4.0.0
+    image: bikashhasmobile/realtime-transaction-tracker:9.0.0
     build:
       context: .
       dockerfile: Dockerfile
@@ -69,10 +69,13 @@ services:
       - mongo
       - setup
     environment:
-      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:9092
-      SPRING_DATA_MONGODB_URI: mongodb://mongo-db:27017/mybank
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo-db:27017/mybank
+      - SPRING_R2DBC_URL=r2dbc:mysql://mysql8:3306/mysql_tms_ti  # Connect to MySQL container
+      - SPRING_R2DBC_USERNAME=tmsuser
+      - SPRING_R2DBC_PASSWORD=tmsuser
   view-transaction-service:
-    image: bikashhasmobile/view_transaction:5.0.0
+    image: bikashhasmobile/view_transaction:9.0.0
     container_name: view_transaction_service
     ports:
       - "8081:8082"

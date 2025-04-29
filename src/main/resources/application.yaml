@@ -16,12 +16,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/mybank
-  datasource:
-    url: jdbc:mysql://localhost:3306/mysql_tms_ti
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/mysql_tms_ti
     username: root
     password: tmsroot
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+    pool:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: create
@@ -30,5 +30,9 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
+
+  sql:
+    init:
+      platform: mysql
 server:
   port: 8081

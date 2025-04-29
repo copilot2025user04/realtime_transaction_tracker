@@ -42,6 +42,7 @@ public class KafkaListener {
             transaction.setReceiverAccount(transactionDetail.getBenefetryAccount().getAccountId().toString());
             transaction.setAmount(transactionDetail.getAmount());
             transaction.setStatus("SUCCESS");
+            System.out.println("Transaction saved: "+transaction);
             transactionRepository.save(transaction);
         };
     }

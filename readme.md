@@ -1,6 +1,6 @@
 docker compose up
 
-docker exec -it 4f2ad0aee7e0  bash
+docker exec -it 4f2ad0aee7e0 bash
 
 kafka-topics --bootstrap-server localhost:9092 \
 --create --if-not-exists \
@@ -32,8 +32,8 @@ db.withdrawals.find({}).pretty()
 db.withdrawals.find({accountNumber: "1234567890"}).pretty()
 db.withdrawals.find({accountNumber: "1234567890", status: "SUCCESS"}).pretty()
 db.withdrawals.find({accountNumber: "123457"}).pretty()
-`kafka-console-producer --broker-list localhost:9092 --topic transaction_initiation
-`enter below message
+kafka-console-producer --broker-list localhost:9092 --topic transaction_initiation
+enter below message
 { "transactionId": "txn_ABC123", "amount": 500.00, "sender": "123456710", "receiver": "987654322" }
 { "transactionId": "txn_ABC123", "amount": 200.00, "sender": "123456711", "receiver": "987654322" }
 { "transactionId": "txn_ABC123", "amount": 300.00, "sender": "123456711", "receiver": "987654322" }
