@@ -4,6 +4,8 @@ services:
     image: confluentinc/cp-zookeeper:7.5.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-network
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
@@ -19,6 +21,8 @@ services:
       - zookeeper
     volumes:
       - kafka-data:/var/lib/kafka/data
+    networks:
+      - app-network
   mongo:
     image: mongo:7.0
     container_name: mongo-db
@@ -26,6 +30,8 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - app-network
   redis:
     image: redis/redis-stack:latest
     container_name: tmsRedis
@@ -58,7 +64,7 @@ services:
       - mongo
     restart: "no"
   realtime-transaction-tracker:
-    image: bikashhasmobile/realtime-transaction-tracker:9.0.0
+    image: bikashhasmobile/realtime-transaction-tracker:9.0.1
     build:
       context: .
       dockerfile: Dockerfile
@@ -74,8 +80,10 @@ services:
       - SPRING_R2DBC_URL=r2dbc:mysql://mysql8:3306/mysql_tms_ti  # Connect to MySQL container
       - SPRING_R2DBC_USERNAME=tmsuser
       - SPRING_R2DBC_PASSWORD=tmsuser
+    networks:
+      - app-network
   view-transaction-service:
-    image: bikashhasmobile/view_transaction:9.0.0
+    image: bikashhasmobile/view_transaction:9.0.3
     container_name: view_transaction_service
     ports:
       - "8081:8082"
@@ -87,6 +95,7 @@ services:
     - SPRING_R2DBC_USERNAME=tmsuser
     - SPRING_R2DBC_PASSWORD=tmsuser
     - CORSURL=$${cors.url:localhost:8081}
+    - KAFKA_BOOTSTRAP_ADDRESS=kafka:9092
     networks:
       - app-network
 

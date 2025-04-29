@@ -1,6 +1,7 @@
 package com.ey.bank.realtime_transaction_tracker.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 
@@ -12,12 +13,13 @@ import java.time.LocalDateTime;
 @ToString
 @Data
 @Table("transaction")
+@JsonIgnoreProperties (ignoreUnknown = true)
 public class Transaction {
     @Id
     private String transactionId;
     private String senderAccount;
     private String receiverAccount;
-    private BigDecimal amount;
+    private Integer amount;
     private String currency;
     private String status;
     private LocalDateTime timestamp;

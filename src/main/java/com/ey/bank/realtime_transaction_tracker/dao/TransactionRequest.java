@@ -14,7 +14,7 @@ import lombok.ToString;
 public class TransactionRequest {
     private String transactionId;
     private String sender;
-    private double amount;
+    private Integer amount;
     private String receiver;
     private String status;
     // Getters and setters

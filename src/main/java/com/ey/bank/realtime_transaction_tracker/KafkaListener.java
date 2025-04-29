@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Configuration
@@ -23,27 +24,26 @@ public class KafkaListener {
     private TransactionRepository transactionRepository;
 
     @Bean
-    public Consumer<TransactionDetail> processTransaction() {
-        return transactionDetail     -> {
-            System.out.println("Received transaction: " + transactionDetail);
-            if(transactionDetail.getStatus()!=null && transactionDetail.getStatus().equalsIgnoreCase("F")) {
-                transactionDetail.setAmount(transactionDetail.getAmount().negate());
+    public Consumer<Transaction> processTransaction() {
+        return transactionRequest     -> {
+            System.out.println("Received transaction: " + transactionRequest);
+            if(transactionRequest.getStatus()!=null && transactionRequest.getStatus().equalsIgnoreCase("F")) {
+                transactionRequest.setAmount(transactionRequest.getAmount() == null ? 0 : transactionRequest.getAmount());
             }
             WithdrawalDocument doc = new WithdrawalDocument(
-                   transactionDetail.getAccount().getAccountId().toString(),
-                    transactionDetail.getAmount(),
+                    transactionRequest.getSenderAccount(),
+                    transactionRequest.getAmount(),
                     Instant.now()
             );
             System.out.println("WithdrawalDocument transaction: " + doc);
             repository.save(doc).subscribe();
-            Transaction transaction = new Transaction();
-            transaction.setSenderAccount(transactionDetail.getAccount().getAccountId().toString());
-            transaction.setTransactionId(transactionDetail.getUuid().toString());
-            transaction.setReceiverAccount(transactionDetail.getBenefetryAccount().getAccountId().toString());
-            transaction.setAmount(transactionDetail.getAmount());
-            transaction.setStatus("SUCCESS");
-            System.out.println("Transaction saved: "+transaction);
-            transactionRepository.save(transaction);
+            if (transactionRequest.getTransactionId() == null || transactionRequest.getTransactionId().isEmpty()) {
+                transactionRequest.setTransactionId(UUID.randomUUID().toString());
+            }
+            transactionRequest.setStatus("SUCCESS");
+            System.out.println("Transaction saved: "+transactionRequest);
+            transactionRepository.save(transactionRequest).subscribe();
+            System.out.println("Transaction saved: "+transactionRequest);
         };
     }
 }

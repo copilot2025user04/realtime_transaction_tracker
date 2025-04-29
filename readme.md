@@ -42,8 +42,8 @@ enter below message
 {"uuid":"123e4567-e89b-12d3-a456-426614174000","account":{"accountId":1,"accountHolderName":"John Doe","accountType":"SAVINGS","branchName":"Main Branch","ifscCode":"IFSC0001"},"benefetryAccount":{"accountId":2,"accountHolderName":"Jane Smith","accountType":"CURRENT","bankName":"XYZ Bank","branchName":"Downtown Branch","ifscCode":"IFSC0002","balance":10000.50},"transactionType":"IMPS","amount":501.75,"timeStamp":"2025-04-14T10:30:00","balenceCheckStatus":true,"transLimitChkStatus":true,"status":"F"}
 
 docker build -t realtime-transaction-tracker:4 .
-docker tag realtime-transaction-tracker:4 bikashhasmobile/realtime-transaction-tracker:4.0.0
-docker push bikashhasmobile/realtime-transaction-tracker:4.0.0
+docker tag realtime-transaction-tracker:4 bikashhasmobile/realtime-transaction-tracker:9.0.1
+docker push bikashhasmobile/realtime-transaction-tracker:9.0.1
 
 minikube start --memory=6144 --cpus=2 --disk-size=20g
 minikube addons enable ingress

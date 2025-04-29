@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Document("withdrawals")
 public class WithdrawalDocument {
     private String accountNumber;
-    private BigDecimal amount;
+    private Integer amount;
     private Instant timestamp;
 
 
