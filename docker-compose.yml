@@ -72,10 +72,10 @@ services:
       SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:9092
       SPRING_DATA_MONGODB_URI: mongodb://mongo-db:27017/mybank
   view-transaction-service:
-    image: bikashhasmobile/view_transaction:4.0.0
+    image: bikashhasmobile/view_transaction:5.0.0
     container_name: view_transaction_service
     ports:
-      - "8081:8081"
+      - "8081:8082"
     restart: unless-stopped
     depends_on:
       - mysql
@@ -83,6 +83,7 @@ services:
     - SPRING_R2DBC_URL=r2dbc:mysql://mysql8:3306/mysql_tms_ti  # Connect to MySQL container
     - SPRING_R2DBC_USERNAME=tmsuser
     - SPRING_R2DBC_PASSWORD=tmsuser
+    - CORSURL=$${cors.url:localhost:8081}
     networks:
       - app-network
 

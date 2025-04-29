@@ -8,13 +8,27 @@ spring:
       bindings:
         processTransaction-in-0:
           destination: transaction_initiation
-          group: transaction-group
+          group: transaction-group1
+          contentType: application/json
       kafka:
         binder:
           brokers: localhost:9092
   data:
     mongodb:
-      uri: mongodb://mongo-db:27017/mybank
+      uri: mongodb://localhost:27017/mybank
+  datasource:
+    url: jdbc:mysql://localhost:3306/mysql_tms_ti
+    username: root
+    password: tmsroot
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
 server:
   port: 8081

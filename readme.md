@@ -63,3 +63,7 @@ minikube delete
 
 docker-compose up -d --force-recreate --no-deps realtime-transaction-tracker`
 docker-compose up -d --force-recreate --no-deps realtime-transaction-tracker
+
+docker-compose up -d --force-recreate --no-deps realtime-transaction-tracker
+
+docker-compose up -d --force-recreate --no-deps view-transaction-service
